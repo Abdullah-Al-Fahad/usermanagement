@@ -1,0 +1,98 @@
+/* Toolbar Container */
+.toolbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1); /* Glassmorphism effect */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+  }
+  
+  /* Toolbar Buttons */
+  .toolbar-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #fff;
+    margin: 0 5px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+  }
+  
+  .toolbar-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Specific Button Colors */
+  .toolbar-button.variant-danger {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+  }
+  
+  .toolbar-button.variant-success {
+    background: linear-gradient(135deg, #28a745, #218838);
+  }
+  
+  .toolbar-button.variant-dark {
+    background: linear-gradient(135deg, #343a40, #23272b);
+  }
+  
+  /* User Info and Logout Section */
+  .user-logout-section {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between user name and logout button */
+  }
+  
+  .user-info {
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .user-info span {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-info .welcome-text {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .user-info .user-name {
+    font-weight: 600;
+    color: #fff;
+  }
+  .logout-button {
+    background: linear-gradient(135deg, #423ff1, #8f31ed); /* Gradient background */
+    padding: 8px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    color: white !important; /* Force white font color */
+    border: none !important; /* Remove border */
+  }
+  
+  .logout-button:hover {
+    background: linear-gradient(135deg, #ef3343, #cf1e7c);
+    transform: translateY(-2px);
+    color: white !important; /* Ensure font color stays white on hover */
+  }
