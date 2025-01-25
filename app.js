@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'https://itransition-task4-uma.vercel.app', // Allow your frontend URL
+    origin: 'https://uma-1wiwlirf4-abdullah-al-fahads-projects.vercel.app', // Allow your frontend URL
     methods: ['GET', 'POST'],
   },
 });
