@@ -16,8 +16,9 @@ const server = http.createServer(app);
 // Allow all origins for CORS
 app.use(cors({
   origin: '*', // Allow any domain to access the server
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow all common HTTP methods
+  methods: '*',
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+  credentials: true,
 }));
 
 // Socket.IO configuration
