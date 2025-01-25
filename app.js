@@ -16,15 +16,29 @@ const server = http.createServer(app);
 // CORS configuration
 const allowedOrigins = [
   'https://uma-eta-nine.vercel.app', // Your Vercel frontend URL
-  'https://usermanagement-1-p89n.onrender.com', 
+  'https://usermanagement-1-p89n.onrender.com', // Your Render frontend URL
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
+// Logging middleware for debugging CORS
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  console.log('Origin:', req.headers.origin);
+  console.log('Headers:', req.headers);
+  next();
+});
+
+// CORS middleware
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
+);
+
+// Handle preflight requests
+app.options('*', cors()); // Allow preflight requests for all routes
 
 // Socket.IO configuration
 const io = new Server(server, {
