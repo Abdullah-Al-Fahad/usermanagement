@@ -7,7 +7,8 @@ const sequelize = require('./models').sequelize;
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const errorHandler = require('./middleware/error');
-
+const { Sequelize } = require('sequelize');
+const sequelize = require('./models').sequelize;
 dotenv.config();
 
 const app = express();
@@ -49,6 +50,27 @@ io.on('connection', (socket) => {
 // Make io accessible in routes
 app.set('io', io);
 
+// Run migrations on startup
+async function runMigrations() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connected');
+
+    // Run migrations
+    const { exec } = require('child_process');
+    exec('npx sequelize-cli db:migrate', (error, stdout, stderr) => {
+      if (error) {
+        console.error('Migration failed:', error);
+        return;
+      }
+      console.log('Migrations executed successfully:', stdout);
+    });
+  } catch (error) {
+    console.error('Database connection or migration failed:', error);
+  }
+}
+
+runMigrations();
 // Start the server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
