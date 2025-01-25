@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "app_user",
+    "password": "securepassword",
+    "database": "user_management",
+    "host": "localhost",
+    "dialect": "postgres",
+    "logging": true
+  }
+}
