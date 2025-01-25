@@ -13,50 +13,19 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// Define allowed origins
-const allowedOrigins = [
-  'https://uma-eta-nine.vercel.app', // Your Vercel frontend URL
-  'https://usermanagement-1-p89n.onrender.com', // Your Render frontend URL
-  'http://localhost:5173', // Your local frontend URL
-];
-
-// Logging middleware for debugging CORS
-app.use((req, res, next) => {
-  console.log(`Incoming request: ${req.method} ${req.url}`);
-  console.log('Origin:', req.headers.origin);
-  console.log('Headers:', req.headers);
-  next();
-});
-
-// CORS middleware
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (e.g., health checks, server-to-server requests)
-      if (!origin) return callback(null, true);
-
-      // Allow requests from allowed origins
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      // Block requests from disallowed origins
-      return callback(new Error('Not allowed by CORS'));
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  })
-);
-
-// Handle preflight requests
-app.options('*', cors());
+// Allow all origins for CORS
+app.use(cors({
+  origin: '*', // Allow any domain to access the server
+  methods: '*',
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+  credentials: true,
+}));
 
 // Socket.IO configuration
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
-    methods: ['GET', 'POST'],
+    origin: '*', // Allow any domain to connect to Socket.IO
+    methods: ['GET', 'POST'], // Allow only GET and POST for Socket.IO
   },
 });
 
