@@ -13,19 +13,24 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// Allow all origins for CORS
+// CORS configuration
+const allowedOrigins = [
+  'https://your-vercel-frontend.vercel.app', // Your Vercel frontend URL
+  'http://localhost:3000', // Local development
+];
+
 app.use(cors({
-  origin: '*', // Allow any domain to access the server
-  methods: '*',
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
 // Socket.IO configuration
 const io = new Server(server, {
   cors: {
-    origin: '*', // Allow any domain to connect to Socket.IO
-    methods: ['GET', 'POST'], // Allow only GET and POST for Socket.IO
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
   },
 });
 
