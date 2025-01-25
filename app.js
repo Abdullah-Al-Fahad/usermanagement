@@ -16,12 +16,14 @@ const server = http.createServer(app);
 // Define allowed origins
 const allowedOrigins = [
   'https://uma-eta-nine.vercel.app', // Your Vercel frontend URL
+  'https://usermanagement-1-p89n.onrender.com', // Your Render frontend URL
   'http://localhost:5173', // Your local frontend URL
 ];
 
 // Logging middleware for debugging CORS
 app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.url}`);
+  console.log('Origin:', req.headers.origin);
   console.log('Headers:', req.headers);
   next();
 });
