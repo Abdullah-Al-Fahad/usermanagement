@@ -15,8 +15,8 @@ const server = http.createServer(app);
 
 // CORS configuration
 const allowedOrigins = [
-  'https://uma-5rcggitjg-abdullah-al-fahads-projects.vercel.app', // Your Vercel frontend URL
-  'http://localhost:3000', // Local development
+  'https://uma-eta-nine.vercel.app', // Your Vercel frontend URL
+  'https://usermanagement-1-p89n.onrender.com', 
 ];
 
 app.use(cors({
