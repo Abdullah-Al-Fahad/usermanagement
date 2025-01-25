@@ -3,19 +3,19 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const sequelize = require('./models').sequelize;
+const { Sequelize } = require('sequelize'); // Import Sequelize class
+const sequelize = require('./models').sequelize; // Declare sequelize instance
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const errorHandler = require('./middleware/error');
-const { Sequelize } = require('sequelize');
-const sequelize = require('./models').sequelize;
+
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-   // origin: 'http://localhost:5173', // Allow your frontend URL
+    // origin: 'http://localhost:5173', // Allow your frontend URL
     origin: 'https://uma-7mlfqhupr-abdullah-al-fahads-projects.vercel.app',
     methods: ['GET', 'POST'],
   },
@@ -71,6 +71,7 @@ async function runMigrations() {
 }
 
 runMigrations();
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
