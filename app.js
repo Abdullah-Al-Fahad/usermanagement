@@ -13,10 +13,11 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// CORS configuration
+// Define allowed origins
 const allowedOrigins = [
   'https://uma-eta-nine.vercel.app', // Your Vercel frontend URL
   'https://usermanagement-1-p89n.onrender.com', // Your Render frontend URL
+  'http://localhost:5173', // Your local frontend URL
 ];
 
 // Logging middleware for debugging CORS
@@ -30,7 +31,18 @@ app.use((req, res, next) => {
 // CORS middleware
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., health checks, server-to-server requests)
+      if (!origin) return callback(null, true);
+
+      // Allow requests from allowed origins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Block requests from disallowed origins
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -38,7 +50,7 @@ app.use(
 );
 
 // Handle preflight requests
-app.options('*', cors()); // Allow preflight requests for all routes
+app.options('*', cors());
 
 // Socket.IO configuration
 const io = new Server(server, {
