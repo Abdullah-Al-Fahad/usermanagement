@@ -12,15 +12,23 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+
+// Allow all origins for CORS
+app.use(cors({
+  origin: '*', // Allow any domain to access the server
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow all common HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+}));
+
+// Socket.IO configuration
 const io = new Server(server, {
   cors: {
-    origin: 'https://itransition-task4-uma.vercel.app/', // Allow your frontend URL
-    methods: ['GET', 'POST'],
+    origin: '*', // Allow any domain to connect to Socket.IO
+    methods: ['GET', 'POST'], // Allow only GET and POST for Socket.IO
   },
 });
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Database connection
