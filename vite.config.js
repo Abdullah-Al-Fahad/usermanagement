@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Your backend server URL
+        target: 'https://usermanagement-hz1w.onrender.com', // Your backend server URL
         changeOrigin: true,
         secure: false,
       },
