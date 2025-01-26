@@ -27,34 +27,34 @@ router.post('/block', authMiddleware, async (req, res, next) => {
     const { userIds } = req.body;
     console.log('Blocking users with IDs:', userIds); // Debug log
 
-    // Check if any of the users are already blocked
-    const users = await User.findAll({
-      where: { id: userIds },
-      attributes: ['id', 'status'],
+    // Fetch users who are active
+    const activeUsers = await User.findAll({
+      where: { id: userIds, status: 'active' },
+      attributes: ['id'],
     });
 
-    const alreadyBlockedUsers = users.filter((user) => user.status === 'blocked');
-    if (alreadyBlockedUsers.length > 0) {
-      const blockedUserIds = alreadyBlockedUsers.map((user) => user.id);
+    const activeUserIds = activeUsers.map((user) => user.id);
+
+    if (activeUserIds.length === 0) {
       return res.status(400).json({
-        message: `Please Select Active Users To Block`,
+        message: 'Please Select Active Users To Block',
       });
     }
 
-    // Update user status to 'blocked'
-    await User.update({ status: 'blocked' }, { where: { id: userIds } });
-    console.log('Users blocked successfully:', userIds); // Debug log
+    // Update only active users to 'blocked'
+    await User.update({ status: 'blocked' }, { where: { id: activeUserIds } });
+    console.log('Users blocked successfully:', activeUserIds); // Debug log
 
     // Emit event to all clients
     const io = req.app.get('io');
     if (io) {
-      io.emit('usersUpdated', { action: 'block', userIds });
-      console.log('Emitted usersUpdated event:', { action: 'block', userIds }); // Debug log
+      io.emit('usersUpdated', { action: 'block', userIds: activeUserIds });
+      console.log('Emitted usersUpdated event:', { action: 'block', userIds: activeUserIds }); // Debug log
     } else {
       console.error('Socket.IO instance (io) is not available'); // Debug log
     }
 
-    res.json({ message: 'Users blocked successfully' });
+    res.json({ message: 'Users blocked successfully', blockedUserIds: activeUserIds });
   } catch (error) {
     console.error('Error blocking users:', error.message); // Debug log
     next(createError(500, error.message));
@@ -67,34 +67,34 @@ router.post('/unblock', authMiddleware, async (req, res, next) => {
     const { userIds } = req.body;
     console.log('Unblocking users with IDs:', userIds); // Debug log
 
-    // Check if any of the users are already unblocked
-    const users = await User.findAll({
-      where: { id: userIds },
-      attributes: ['id', 'status'],
+    // Fetch users who are blocked
+    const blockedUsers = await User.findAll({
+      where: { id: userIds, status: 'blocked' },
+      attributes: ['id'],
     });
 
-    const alreadyUnblockedUsers = users.filter((user) => user.status === 'active');
-    if (alreadyUnblockedUsers.length > 0) {
-      const unblockedUserIds = alreadyUnblockedUsers.map((user) => user.id);
+    const blockedUserIds = blockedUsers.map((user) => user.id);
+
+    if (blockedUserIds.length === 0) {
       return res.status(400).json({
-        message: `Please Select Blocked Users To Unblock`,
+        message: 'Please Select Blocked Users To Unblock',
       });
     }
 
-    // Update user status to 'active'
-    await User.update({ status: 'active' }, { where: { id: userIds } });
-    console.log('Users unblocked successfully:', userIds); // Debug log
+    // Update only blocked users to 'active'
+    await User.update({ status: 'active' }, { where: { id: blockedUserIds } });
+    console.log('Users unblocked successfully:', blockedUserIds); // Debug log
 
     // Emit event to all clients
     const io = req.app.get('io');
     if (io) {
-      io.emit('usersUpdated', { action: 'unblock', userIds });
-      console.log('Emitted usersUpdated event:', { action: 'unblock', userIds }); // Debug log
+      io.emit('usersUpdated', { action: 'unblock', userIds: blockedUserIds });
+      console.log('Emitted usersUpdated event:', { action: 'unblock', userIds: blockedUserIds }); // Debug log
     } else {
       console.error('Socket.IO instance (io) is not available'); // Debug log
     }
 
-    res.json({ message: 'Users unblocked successfully' });
+    res.json({ message: 'Users unblocked successfully', unblockedUserIds: blockedUserIds });
   } catch (error) {
     console.error('Error unblocking users:', error.message); // Debug log
     next(createError(500, error.message));
