@@ -19,7 +19,7 @@ This is a full-stack web application built with **Express.js** (backend), **Vite
      - Email
      - Last login time
      - Status (Active/Blocked)
-   - Users sorted by last login time.
+     - Users sorted by last login time.
 
 3. **Toolbar Actions**:
    - **Block**: Block selected users.
