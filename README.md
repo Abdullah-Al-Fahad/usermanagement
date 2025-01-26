@@ -52,10 +52,6 @@ This is a full-stack web application built with **Express.js** (backend), **Vite
   - Sequelize (ORM)
   - PostgreSQL (database)
 
-- **Other Tools**:
-  - Git (version control)
-  - Postman (API testing)
-
 ---
 
 ## Repository Structure
