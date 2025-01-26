@@ -26,7 +26,7 @@ const Login = () => {
     } catch (error) {
       console.error('Login error:', error); // Debugging
       if (error.response?.data?.error?.message === 'Account is blocked') {
-        toast.error('Your account is blocked. Please contact support.'); // Toast for blocked account
+        toast.error('Your account is blocked.'); // Toast for blocked account
       } else {
         toast.error(error.response?.data?.error || 'Login failed'); // Generic error toast
       }
