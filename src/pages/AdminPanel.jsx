@@ -15,7 +15,7 @@ const AdminPanel = () => {
   // Initialize Socket.IO
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const socket = io('http://localhost:5000', {
+    const socket = io('https://usermanagement-hz1w.onrender.com', {
       auth: {
         token,
       },
@@ -111,9 +111,9 @@ const AdminPanel = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
       );
-  
+
       if (response.status === 400) {
-        // Handle the case where some users are already blocked
+        // Handle the case where no active users were selected
         toast.warning(response.data.message);
       } else {
         setSelected([]);
@@ -122,7 +122,7 @@ const AdminPanel = () => {
     } catch (error) {
       console.error('Error blocking users:', error); // Debug log
       if (error.response?.status === 400) {
-        // Display the backend's specific message for already blocked users
+        // Display the backend's specific message for no active users
         toast.warning(error.response.data.message);
       } else {
         toast.error(error.response?.data?.error || 'Failed to block users');
@@ -141,9 +141,9 @@ const AdminPanel = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
       );
-  
+
       if (response.status === 400) {
-        // Handle the case where some users are already unblocked
+        // Handle the case where no blocked users were selected
         toast.warning(response.data.message);
       } else {
         setSelected([]);
@@ -152,14 +152,14 @@ const AdminPanel = () => {
     } catch (error) {
       console.error('Error unblocking users:', error); // Debug log
       if (error.response?.status === 400) {
-        // Display the backend's specific message for already unblocked users
+        // Display the backend's specific message for no blocked users
         toast.warning(error.response.data.message);
       } else {
         toast.error(error.response?.data?.error || 'Failed to unblock users');
       }
     }
   };
-
+  
   // Handle delete users
   const handleDelete = async () => {
     try {

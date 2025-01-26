@@ -25,7 +25,11 @@ const Login = () => {
       navigate('/admin');
     } catch (error) {
       console.error('Login error:', error); // Debugging
-      toast.error(error.response?.data?.error || 'Login failed');
+      if (error.response?.data?.error?.message === 'Account is blocked') {
+        toast.error('Your account is blocked. Please contact support.'); // Toast for blocked account
+      } else {
+        toast.error(error.response?.data?.error || 'Login failed'); // Generic error toast
+      }
     }
   };
 
